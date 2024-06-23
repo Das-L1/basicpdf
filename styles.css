@@ -10,21 +10,36 @@ body {
     margin-bottom: 20px;
 }
 
+#book-container {
+    display: flex;
+    justify-content: center;
+}
+
 #book-viewer {
     width: 90%;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 1200px;
     background: white;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
 }
 
-.pdf-page {
-    margin-bottom: 20px;
+.pdf-page, .text-content {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
 }
 
 .text-content {
     white-space: pre-wrap;
     font-size: 1.2em;
     line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+    #book-viewer {
+        grid-template-columns: 1fr 1fr;
+    }
 }

@@ -70,4 +70,17 @@ document.addEventListener("DOMContentLoaded", function () {
         viewer.innerHTML = '';
         fileInput.value = '';
     });
+
+    // Function to adjust layout based on orientation
+    function adjustLayout() {
+        if (window.innerWidth > window.innerHeight) {
+            viewer.style.gridTemplateColumns = '1fr 1fr';
+        } else {
+            viewer.style.gridTemplateColumns = '1fr';
+        }
+    }
+
+    // Adjust layout on load and resize
+    adjustLayout();
+    window.addEventListener('resize', adjustLayout);
 });
