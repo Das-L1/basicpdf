@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="controls">
+        <input type="file" id="file-input" multiple accept=".pdf,.txt">
+        <button id="load-files">Load Files</button>
+        <button id="clear-viewer">Clear Viewer</button>
+    </div>
+    <div id="book-viewer">
+        <!-- PDF and TXT content will be displayed here -->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
