@@ -11,8 +11,10 @@ body {
 }
 
 #book-container {
+    position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 #book-viewer {
@@ -24,6 +26,7 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
+    overflow: hidden;
 }
 
 .pdf-page, .text-content {
@@ -42,4 +45,24 @@ body {
     #book-viewer {
         grid-template-columns: 1fr 1fr;
     }
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 2em;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+#left-arrow {
+    left: 10px;
+}
+
+#right-arrow {
+    right: 10px;
 }

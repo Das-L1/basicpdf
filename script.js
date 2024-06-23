@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const loadFilesButton = document.getElementById('load-files');
     const clearViewerButton = document.getElementById('clear-viewer');
     const viewer = document.getElementById('book-viewer');
+    const leftArrow = document.getElementById('left-arrow');
+    const rightArrow = document.getElementById('right-arrow');
+
+    let currentPage = 0;
+    let pages = [];
 
     // Function to load a single PDF file
     async function loadPDF(file) {
@@ -27,8 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const pageDiv = document.createElement('div');
                 pageDiv.className = 'pdf-page';
                 pageDiv.appendChild(canvas);
-                viewer.appendChild(pageDiv);
+                pages.push(pageDiv);
             }
+            displayPages();
         };
         fileReader.readAsArrayBuffer(file);
     }
@@ -41,7 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const pre = document.createElement('pre');
             pre.className = 'text-content';
             pre.textContent = text;
-            viewer.appendChild(pre);
+            pages.push(pre);
+            displayPages();
         };
         fileReader.readAsText(file);
     }
@@ -49,6 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to load multiple files
     async function loadFiles(files) {
         viewer.innerHTML = '';
+        pages = [];
+        currentPage = 0;
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             if (file.type === 'application/pdf') {
@@ -57,6 +66,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 await loadTXT(file);
             }
         }
+    }
+
+    // Function to display pages
+    function displayPages() {
+        viewer.innerHTML = '';
+        const isLandscape = window.innerWidth > window.innerHeight;
+        const pagesToShow = isLandscape ? 2 : 1;
+        for (let i = 0; i < pagesToShow; i++) {
+            const pageIndex = currentPage + i;
+            if (pageIndex < pages.length) {
+                viewer.appendChild(pages[pageIndex]);
+            }
+        }
+        updateNavArrows();
+    }
+
+    // Function to update navigation arrows visibility
+    function updateNavArrows() {
+        leftArrow.style.display = currentPage > 0 ? 'block' : 'none';
+        rightArrow.style.display = currentPage + (window.innerWidth > window.innerHeight ? 2 : 1) < pages.length ? 'block' : 'none';
     }
 
     // Event listeners
@@ -69,18 +98,45 @@ document.addEventListener("DOMContentLoaded", function () {
     clearViewerButton.addEventListener('click', () => {
         viewer.innerHTML = '';
         fileInput.value = '';
+        pages = [];
+        currentPage = 0;
+    });
+
+    leftArrow.addEventListener('click', () => {
+        if (currentPage > 0) {
+            currentPage -= window.innerWidth > window.innerHeight ? 2 : 1;
+            displayPages();
+        }
+    });
+
+    rightArrow.addEventListener('click', () => {
+        if (currentPage + (window.innerWidth > window.innerHeight ? 2 : 1) < pages.length) {
+            currentPage += window.innerWidth > window.innerHeight ? 2 : 1;
+            displayPages();
+        }
     });
 
     // Function to adjust layout based on orientation
     function adjustLayout() {
-        if (window.innerWidth > window.innerHeight) {
-            viewer.style.gridTemplateColumns = '1fr 1fr';
-        } else {
-            viewer.style.gridTemplateColumns = '1fr';
-        }
+        displayPages();
     }
 
     // Adjust layout on load and resize
     adjustLayout();
     window.addEventListener('resize', adjustLayout);
+
+    // Add mouse wheel event for navigation
+    viewer.addEventListener('wheel', (event) => {
+        if (event.deltaY > 0) {
+            if (currentPage + (window.innerWidth > window.innerHeight ? 2 : 1) < pages.length) {
+                currentPage += window.innerWidth > window.innerHeight ? 2 : 1;
+                displayPages();
+            }
+        } else {
+            if (currentPage > 0) {
+                currentPage -= window.innerWidth > window.innerHeight ? 2 : 1;
+                displayPages();
+            }
+        }
+    });
 });
