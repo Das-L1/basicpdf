@@ -71,13 +71,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to display pages
     function displayPages() {
         viewer.innerHTML = '';
-        const isLandscape = window.innerWidth > window.innerHeight;
-        const pagesToShow = isLandscape ? 2 : 1;
-        for (let i = 0; i < pagesToShow; i++) {
-            const pageIndex = currentPage + i;
-            if (pageIndex < pages.length) {
-                viewer.appendChild(pages[pageIndex]);
-            }
+        if (currentPage < pages.length) {
+            const page = pages[currentPage];
+            page.style.display = 'block';
+            viewer.appendChild(page);
         }
         updateNavArrows();
     }
@@ -85,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to update navigation arrows visibility
     function updateNavArrows() {
         leftArrow.style.display = currentPage > 0 ? 'block' : 'none';
-        rightArrow.style.display = currentPage + (window.innerWidth > window.innerHeight ? 2 : 1) < pages.length ? 'block' : 'none';
+        rightArrow.style.display = currentPage < pages.length - 1 ? 'block' : 'none';
     }
 
     // Event listeners
@@ -104,14 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     leftArrow.addEventListener('click', () => {
         if (currentPage > 0) {
-            currentPage -= window.innerWidth > window.innerHeight ? 2 : 1;
+            currentPage--;
             displayPages();
         }
     });
 
     rightArrow.addEventListener('click', () => {
-        if (currentPage + (window.innerWidth > window.innerHeight ? 2 : 1) < pages.length) {
-            currentPage += window.innerWidth > window.innerHeight ? 2 : 1;
+        if (currentPage < pages.length - 1) {
+            currentPage++;
             displayPages();
         }
     });
@@ -128,13 +125,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add mouse wheel event for navigation
     viewer.addEventListener('wheel', (event) => {
         if (event.deltaY > 0) {
-            if (currentPage + (window.innerWidth > window.innerHeight ? 2 : 1) < pages.length) {
-                currentPage += window.innerWidth > window.innerHeight ? 2 : 1;
+            if (currentPage < pages.length - 1) {
+                currentPage++;
                 displayPages();
             }
         } else {
             if (currentPage > 0) {
-                currentPage -= window.innerWidth > window.innerHeight ? 2 : 1;
+                currentPage--;
                 displayPages();
             }
         }

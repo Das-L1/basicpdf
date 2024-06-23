@@ -34,9 +34,10 @@ body {
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
-    margin: 0 20px;
+    margin: 0;
     max-height: 100%;
     overflow: hidden;
+    display: none; /* Initially hide all pages */
 }
 
 .text-content {
